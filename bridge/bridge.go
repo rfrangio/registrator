@@ -243,7 +243,6 @@ func (b *Bridge) add(containerId string, quiet bool) {
 		}
 		b.services[container.ID] = append(b.services[container.ID], service)
 		log.Println("added:", container.ID[:12], service.ID)
-		log.Printf("service: %v-%v", b.services[container.ID], service)
 	}
 }
 
