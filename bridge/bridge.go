@@ -202,7 +202,7 @@ func (b *Bridge) add(containerId string, quiet bool) {
 
 	// Extract configured host port mappings, relevant when using --net=host
 	for port, _ := range container.Config.ExposedPorts {
-		published := []dockerapi.PortBinding{ {"0.0.0.0", port.Port()}, }
+		published := []dockerapi.PortBinding{{"0.0.0.0", port.Port()}}
 		ports[string(port)] = servicePort(container, port, published)
 	}
 
@@ -211,19 +211,19 @@ func (b *Bridge) add(containerId string, quiet bool) {
 		ports[string(port)] = servicePort(container, port, published)
 	}
 
-	if len(ports) == 0 && !quiet {
-		log.Println("ignored:", container.ID[:12], "no published ports")
-		return
-	}
+	//if len(ports) == 0 && !quiet {
+	//	log.Println("ignored:", container.ID[:12], "no published ports")
+	//	return
+	//}
 
 	servicePorts := make(map[string]ServicePort)
 	for key, port := range ports {
-		if b.config.Internal != true && port.HostPort == "" {
-			if !quiet {
-				log.Println("ignored:", container.ID[:12], "port", port.ExposedPort, "not published on host")
-			}
-			continue
-		}
+		//if b.config.Internal != true && port.HostPort == "" {
+		//	if !quiet {
+		//		log.Println("ignored:", container.ID[:12], "port", port.ExposedPort, "not published on host")
+		//	}
+		//	continue
+		//}
 		servicePorts[key] = port
 	}
 
@@ -301,7 +301,7 @@ func (b *Bridge) newService(port ServicePort, isgroup bool) *Service {
 				service.IP = containerIp
 			}
 			log.Println("using container IP " + service.IP + " from label '" +
-				b.config.UseIpFromLabel  + "'")
+				b.config.UseIpFromLabel + "'")
 		} else {
 			log.Println("Label '" + b.config.UseIpFromLabel +
 				"' not found in container configuration")
